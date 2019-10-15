@@ -23,6 +23,7 @@ public class OtraPrueba extends JFrame {
         System.out.println("Te quiero Diana :D");
         System.out.println("Y yo te quiero a ti <3");
         System.out.println("Gracias por todo");
+        System.out.println("De nada Diana no hay de que comi siempre");
         op.setVisible(true);
         op.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
