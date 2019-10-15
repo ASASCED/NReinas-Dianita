@@ -21,6 +21,7 @@ public class OtraPrueba extends JFrame {
         OtraPrueba op = new OtraPrueba();
         op.setBounds(0, 0, 500, 500);
         System.out.println("Te quiero Diana :D");
+        System.out.println("Y yo te quiero a ti <3");
         op.setVisible(true);
         op.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
