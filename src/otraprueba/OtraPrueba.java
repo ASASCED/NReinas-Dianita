@@ -1,8 +1,10 @@
 package otraprueba;
 
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +20,7 @@ public class OtraPrueba extends JFrame {
     JLabel label[] = new JLabel[8];
     JLabel tablero[][] = new JLabel[8][8];
     Border border = BorderFactory.createLineBorder(Color.black, 1);
-    int yPosition = 0;
+    int count = 0;
 
     public static void main(String[] args) {
         OtraPrueba op = new OtraPrueba();
@@ -39,6 +41,12 @@ public class OtraPrueba extends JFrame {
                 @Override
                 public void mouseDragged(MouseEvent evt) {
                     myDraggingMethod(evt);//reemplaza a los metodos j1 j2 .... j8MouseDragged
+                }
+            });
+            label[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    myPressedMethod(evt);
                 }
             });
             jpanel.add(label[i], null);
@@ -74,6 +82,13 @@ public class OtraPrueba extends JFrame {
     public void myDraggingMethod(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
             ((JLabel) evt.getSource()).setLocation(newPosition(evt)[0], newPosition(evt)[1]);
+        }
+    }
+
+    public void myPressedMethod(MouseEvent evt) {
+        if (evt.getSource() instanceof JLabel) {
+            System.out.println("Movimientos: " + count);
+            count++;
         }
     }
 
@@ -122,6 +137,12 @@ public class OtraPrueba extends JFrame {
         int retorno[] = {newX, newY};
 
         return retorno;
+    }
+
+    private static class MouseMotionAdapterImpl extends MouseMotionAdapter {
+
+        public MouseMotionAdapterImpl() {
+        }
     }
 
 }
