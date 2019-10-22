@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -15,16 +15,21 @@ import javax.swing.border.Border;
 
 public class OtraPrueba extends JFrame {
 
+    static int reinas = 0;
+    int count = 0;
+    int anchoAlto = 50;
+    int margen = 25;
+    int espaciado = 50;
     JPanel jpanel = (JPanel) this.getContentPane();
     JLabel ex = new JLabel();
-    JLabel label[] = new JLabel[8];
-    JLabel tablero[][] = new JLabel[8][8];
+    JLabel label[] = new JLabel[reinas];
+    JLabel tablero[][] = new JLabel[reinas][reinas];
     Border border = BorderFactory.createLineBorder(Color.black, 1);
-    int count = 0;
 
     public static void main(String[] args) {
+        reinas = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad de Reinas: "));
         OtraPrueba op = new OtraPrueba();
-        op.setBounds(0, 0, 500, 500);
+        op.setBounds(0, 0, (60 * reinas), (60 * reinas));
         op.setVisible(true);
         op.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -32,7 +37,7 @@ public class OtraPrueba extends JFrame {
     public OtraPrueba() {
         for (int i = 0; i < label.length; i++) {
             label[i] = new JLabel();
-            label[i].setBounds(25 + (50 * i), 25, 30, 30);
+            label[i].setBounds(margen + (espaciado * i), margen, anchoAlto, anchoAlto);
             label[i].setText("Q" + (i + 1));
             label[i].setForeground(Color.red);
             label[i].setBorder(border);
@@ -56,7 +61,7 @@ public class OtraPrueba extends JFrame {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
                 tablero[i][j] = new JLabel();
-                tablero[i][j].setBounds(25 + (50 * j), 25 + (50 * i), 30, 30);
+                tablero[i][j].setBounds(margen + (espaciado * j), margen + (espaciado * i), anchoAlto, anchoAlto);
                 tablero[i][j].setBorder(border);
                 tablero[i][j].setBackground(Color.red);
 
@@ -73,7 +78,7 @@ public class OtraPrueba extends JFrame {
         }
 
         // Creamos un pequeño label extra para que imprima el resto correctamente
-        ex.setBounds(25, 25, 30, 30);
+        ex.setBounds(margen, margen, anchoAlto, anchoAlto);
         ex.setBorder(border);
         ex.setBackground(Color.red);
         jpanel.add(ex, null);
@@ -137,12 +142,6 @@ public class OtraPrueba extends JFrame {
         int retorno[] = {newX, newY};
 
         return retorno;
-    }
-
-    private static class MouseMotionAdapterImpl extends MouseMotionAdapter {
-
-        public MouseMotionAdapterImpl() {
-        }
     }
 
 }
