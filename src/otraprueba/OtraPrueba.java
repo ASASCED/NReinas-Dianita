@@ -19,7 +19,7 @@ public class OtraPrueba extends JFrame {
     int count = 0;
     int anchoAlto = 50;
     int margen = 25;
-    int espaciado = 50;
+    int espacio = 50;
     JPanel jpanel = (JPanel) this.getContentPane();
     JLabel ex = new JLabel();
     JLabel label[] = new JLabel[reinas];
@@ -27,7 +27,7 @@ public class OtraPrueba extends JFrame {
     Border border = BorderFactory.createLineBorder(Color.black, 1);
 
     public static void main(String[] args) {
-        reinas = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad de Reinas: "));
+        reinas = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad de reinas"));
         OtraPrueba op = new OtraPrueba();
         op.setBounds(0, 0, (60 * reinas), (60 * reinas));
         op.setVisible(true);
@@ -37,7 +37,8 @@ public class OtraPrueba extends JFrame {
     public OtraPrueba() {
         for (int i = 0; i < label.length; i++) {
             label[i] = new JLabel();
-            label[i].setBounds(margen + (espaciado * i), margen, anchoAlto, anchoAlto);
+            // r + r + r + r
+            label[i].setBounds(margen + (espacio * i), margen, anchoAlto, anchoAlto);
             label[i].setText("Q" + (i + 1));
             label[i].setForeground(Color.red);
             label[i].setBorder(border);
@@ -45,25 +46,23 @@ public class OtraPrueba extends JFrame {
             label[i].addMouseMotionListener(new MouseMotionAdapter() {
                 @Override
                 public void mouseDragged(MouseEvent evt) {
-                    myDraggingMethod(evt);//reemplaza a los metodos j1 j2 .... j8MouseDragged
+                    arrastreReina(evt);
                 }
             });
             label[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent evt) {
-                    myPressedMethod(evt);
+                    movimientoReina(evt);
                 }
             });
-            jpanel.add(label[i], null);
+            jpanel.add(label[i]);
         }
 
-        //        Inicializa el panel.
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
                 tablero[i][j] = new JLabel();
-                tablero[i][j].setBounds(margen + (espaciado * j), margen + (espaciado * i), anchoAlto, anchoAlto);
+                tablero[i][j].setBounds(margen + (espacio * i), margen + (espacio * j), anchoAlto, anchoAlto);
                 tablero[i][j].setBorder(border);
-                tablero[i][j].setBackground(Color.red);
 
                 if ((i % 2 == 0) == (j % 2 == 0)) {
                     tablero[i][j].setBackground(Color.white);
@@ -73,70 +72,56 @@ public class OtraPrueba extends JFrame {
 
                 tablero[i][j].setOpaque(true);
                 tablero[i][j].setHorizontalAlignment(SwingConstants.CENTER);
-                jpanel.add(tablero[i][j], null);
+                jpanel.add(tablero[i][j]);
             }
         }
 
-        // Creamos un pequeño label extra para que imprima el resto correctamente
         ex.setBounds(margen, margen, anchoAlto, anchoAlto);
-        ex.setBorder(border);
-        ex.setBackground(Color.red);
-        jpanel.add(ex, null);
+        jpanel.add(ex);
     }
 
-    public void myDraggingMethod(MouseEvent evt) {
+    public void arrastreReina(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            ((JLabel) evt.getSource()).setLocation(newPosition(evt)[0], newPosition(evt)[1]);
+            ((JLabel) evt.getSource()).setLocation(posicion(evt)[0], posicion(evt)[1]);
         }
     }
 
-    public void myPressedMethod(MouseEvent evt) {
+    public void movimientoReina(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            System.out.println("Movimientos: " + count);
             count++;
+            System.out.println("Movimientos: " + count);
         }
     }
 
-    public int[] newPosition(MouseEvent evt) {
+    public int[] posicion(MouseEvent evt) {
         int newX, newY;
-        if ((evt.getXOnScreen() - 50) <= 25) {
-            newX = 25;
-        } else if ((evt.getXOnScreen() - 50) <= 75) {
-            newX = 75;
-        } else if ((evt.getXOnScreen() - 50) <= 125) {
-            newX = 125;
-        } else if ((evt.getXOnScreen() - 50) <= 175) {
-            newX = 175;
-        } else if ((evt.getXOnScreen() - 50) <= 225) {
-            newX = 225;
-        } else if ((evt.getXOnScreen() - 50) <= 275) {
-            newX = 275;
-        } else if ((evt.getXOnScreen() - 50) <= 325) {
-            newX = 325;
-        } else if ((evt.getXOnScreen() - 50) <= 375) {
-            newX = 375;
+
+        // Variables de entorno X
+        String conX = Integer.toString(evt.getXOnScreen());
+        String ultimoX = conX.substring(conX.length() - 2, conX.length());
+
+        int primerosMenosUltimosX = Integer.parseInt(ultimoX);
+
+        // Variables de entorno Y
+        String conY = Integer.toString(evt.getYOnScreen());
+        String ultimoY = conY.substring(conY.length() - 2, conY.length());
+
+        int primerosMenosUltimosY = Integer.parseInt(ultimoY);
+
+        if (primerosMenosUltimosX < 25) {
+            newX = 25 + (evt.getXOnScreen() - 50 - primerosMenosUltimosX);
+        } else if (primerosMenosUltimosX < 75) {
+            newX = 75 + (evt.getXOnScreen() - 50 - primerosMenosUltimosX);
         } else {
-            newX = 375;
+            newX = 25 + ((evt.getXOnScreen() - 50 + 100) - primerosMenosUltimosX);
         }
 
-        if ((evt.getYOnScreen() - 50) <= 25) {
-            newY = 25;
-        } else if ((evt.getYOnScreen() - 50) <= 75) {
-            newY = 75;
-        } else if ((evt.getYOnScreen() - 50) <= 125) {
-            newY = 125;
-        } else if ((evt.getYOnScreen() - 50) <= 175) {
-            newY = 175;
-        } else if ((evt.getYOnScreen() - 50) <= 225) {
-            newY = 225;
-        } else if ((evt.getYOnScreen() - 50) <= 275) {
-            newY = 275;
-        } else if ((evt.getYOnScreen() - 50) <= 325) {
-            newY = 325;
-        } else if ((evt.getYOnScreen() - 50) <= 375) {
-            newY = 375;
+        if (primerosMenosUltimosY < 25) {
+            newY = 25 + (evt.getYOnScreen() - 50 - primerosMenosUltimosY);
+        } else if (primerosMenosUltimosY < 75) {
+            newY = 75 + (evt.getYOnScreen() - 50 - primerosMenosUltimosY);
         } else {
-            newY = 375;
+            newY = 25 + ((evt.getYOnScreen() - 50 + 100) - primerosMenosUltimosY);
         }
 
         int retorno[] = {newX, newY};
