@@ -1,19 +1,9 @@
 package otraprueba;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 public class OtraPrueba extends JFrame implements ActionListener {
@@ -135,6 +125,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
             for (int i = 0; i < comprobacion.length; i++) {
                 for (int j = 0; j < comprobacion.length; j++) {
+                    // Comprobacion de filas
                     if (comprobacion[i][j].equals("+")) {
                         contUno++;
                         if (contUno == 2) {
@@ -142,6 +133,8 @@ public class OtraPrueba extends JFrame implements ActionListener {
                             break;
                         }
                     }
+                    
+                    // Comprobacion de columnas
                     if (comprobacion[j][i].equals("+")) {
                         contDos++;
                         if (contDos == 2) {
@@ -149,6 +142,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
                             break;
                         }
 
+                        // Comprobacion de diagonales
                         diagS = j - 1;
                         diagI = j + 1;
 
@@ -191,22 +185,11 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
     public void valoresIniciales(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            for (int i = 0; i < algoritmo.length; i++) {
-                for (int j = 0; j < algoritmo.length; j++) {
-                    String string = algoritmo[i][j];
-                    String[] parts = string.split("\\|");
-                    this.cooX = Integer.parseInt(parts[0]);
-                    this.cooY = Integer.parseInt(parts[1]);
-
-                    if (cooX == posicion(evt)[0] && cooY == posicion(evt)[1]) {
-                        System.out.println("i/j: " + i + "/" + j);
-                        this.newI = i;
-                        this.newJ = j;
-                    }
-                }
-            }
+            this.newI = (posicion(evt)[1] - 25) / 50;
+            this.newJ = (posicion(evt)[0] - 25) / 50;
             x = posicion(evt)[0];
             y = posicion(evt)[1];
+            System.out.println("INI X/Y: " + this.newI + "/" + this.newJ);
             System.out.println("X/Y: " + x + "/" + y);
         }
     }
