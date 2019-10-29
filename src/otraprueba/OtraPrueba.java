@@ -57,7 +57,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
                 }
 
                 @Override
-                public void mousePressed(MouseEvent evt) {
+                public void mouseEntered(MouseEvent evt) {
                     valoresIniciales(evt);
                 }
             });
@@ -115,8 +115,6 @@ public class OtraPrueba extends JFrame implements ActionListener {
                 }
             }
 
-            imprimirArreglo(comprobacion);
-
             int contUno = 0;
             int contDos = 0;
             int contTres = 0;
@@ -151,8 +149,6 @@ public class OtraPrueba extends JFrame implements ActionListener {
                         } else if (diagI >= comprobacion.length) {
                             diagI = (comprobacion.length - 1);
                         }
-
-                        System.out.println("S/I: " + diagS + "/" + diagI);
 
                         if (i < comprobacion.length - 1) {
                             if (comprobacion[diagS][i + 1].equals("+") || comprobacion[diagI][i + 1].equals("+")) {
@@ -189,8 +185,6 @@ public class OtraPrueba extends JFrame implements ActionListener {
             this.newJ = (posicion(evt)[0] - 25) / 50;
             x = posicion(evt)[0];
             y = posicion(evt)[1];
-            System.out.println("INI X/Y: " + this.newI + "/" + this.newJ);
-            System.out.println("X/Y: " + x + "/" + y);
         }
     }
 
@@ -199,25 +193,10 @@ public class OtraPrueba extends JFrame implements ActionListener {
             int newX = (posicion(evt)[0] - x) / 50;
             int newY = (posicion(evt)[1] - y) / 50;
 
-            System.out.println("pos X/Y: " + posicion(evt)[0] + "/" + posicion(evt)[1]);
-            System.out.println("newX: " + newX + "\nnewY: " + newY);
-
             algoritmo[newI][newJ] = "0|0";
-            System.out.println("newI/newJ: " + newI + "/" + newJ);
             algoritmo[newI + newY][newJ + newX] = Integer.toString(posicion(evt)[0]) + "|" + Integer.toString(posicion(evt)[1]);
 
             count++;
-            System.out.println("Movimientos: " + count);
-            imprimirArreglo(algoritmo);
-        }
-    }
-
-    public void imprimirArreglo(String[][] arreglo) {
-        for (int i = 0; i < arreglo.length; i++) {
-            for (int j = 0; j < arreglo.length; j++) {
-                System.out.print(arreglo[i][j] + "    ");
-            }
-            System.out.println("");
         }
     }
 
