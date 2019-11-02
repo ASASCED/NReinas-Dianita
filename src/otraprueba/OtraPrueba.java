@@ -8,26 +8,21 @@ import javax.swing.border.Border;
 
 public class OtraPrueba extends JFrame implements ActionListener {
 
-    static int reinas = 0;
-    String[][] algoritmo = new String[reinas][reinas];
-    String[][] comprobacion = new String[reinas][reinas];
-    int count = 0;
-    int anchoAlto = 50;
-    int margen = 25;
-    int espacio = 50;
+    String[][] algoritmo = new String[reinas][reinas], comprobacion = new String[reinas][reinas];
+    String[] parts;
+
+    static short reinas = 0, count = 0, anchoAlto = 50, margen = 25, espacio = 50, newI, newJ, x, y, cooX, cooY;
+
     JPanel jpanel = (JPanel) this.getContentPane();
     JLabel ex = new JLabel();
     JLabel label[] = new JLabel[reinas];
     JLabel tablero[][] = new JLabel[reinas][reinas];
     Border border = BorderFactory.createLineBorder(Color.black, 1);
 
-    String[] parts;
-    int x, y, cooX, cooY, newI, newJ;
-
     JButton boton1;
 
     public static void main(String[] args) {
-        reinas = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad de reinas"));
+        reinas = Short.parseShort(JOptionPane.showInputDialog(null, "Ingrese la cantidad de reinas"));
         OtraPrueba op = new OtraPrueba();
         op.setBounds(0, 0, (60 * reinas), (60 * reinas));
         op.setVisible(true);
@@ -36,7 +31,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
     public OtraPrueba() {
         // Declaracion de reinas
-        for (int i = 0; i < label.length; i++) {
+        for (short i = 0; i < label.length; i++) {
             label[i] = new JLabel();
             // r + r + r + r
             label[i].setBounds(margen + (espacio * i), margen, anchoAlto, anchoAlto);
@@ -63,18 +58,20 @@ public class OtraPrueba extends JFrame implements ActionListener {
             });
             jpanel.add(label[i]);
 
-            for (int j = 0; j < algoritmo.length; j++) {
-                if (i == 0) {
-                    algoritmo[i][j] = Integer.toString((margen + (espacio * j))) + "|" + Integer.toString(margen);
-                } else {
-                    algoritmo[i][j] = "0|0";
-                }
+            for (short j = 0; j < algoritmo.length; j++) {
+//                if (i == 0) {
+//                    algoritmo[i][j] = Integer.toString((margen + (espacio * j))) + "|" + Integer.toString(margen);
+//                } else {
+//                    algoritmo[i][j] = "0|0";
+//                }
+
+                algoritmo[i][j] = (i == 0) ? Integer.toString((margen + (espacio * j))) + "|" + Integer.toString(margen) : "0|0";
             }
         }
 
         // Declaracion del tablero
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero.length; j++) {
+        for (short i = 0; i < tablero.length; i++) {
+            for (short j = 0; j < tablero.length; j++) {
                 tablero[i][j] = new JLabel();
                 tablero[i][j].setBounds(margen + (espacio * i), margen + (espacio * j), anchoAlto, anchoAlto);
                 tablero[i][j].setBorder(border);
@@ -105,26 +102,26 @@ public class OtraPrueba extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == boton1) {
-            for (int i = 0; i < comprobacion.length; i++) {
-                for (int j = 0; j < comprobacion.length; j++) {
-                    if (algoritmo[i][j].equals("0|0")) {
-                        comprobacion[i][j] = "*";
-                    } else {
-                        comprobacion[i][j] = "+";
-                    }
+            for (short i = 0; i < comprobacion.length; i++) {
+                for (short j = 0; j < comprobacion.length; j++) {
+//                    if (algoritmo[i][j].equals("0|0")) {
+//                        comprobacion[i][j] = "*";
+//                    } else {
+//                        comprobacion[i][j] = "+";
+//                    }
+
+                    comprobacion[i][j] = algoritmo[i][j].equals("0|0") ? "*" : "+";
                 }
             }
 
             imprimirArreglo(comprobacion);
 
-            int contUno = 0;
-            int contDos = 0;
-            int contTres = 0;
+            short contUno = 0, contDos = 0, contTres = 0;
 
-            int diagS, diagI;
+            short diagS, diagI;
 
-            for (int i = 0; i < comprobacion.length; i++) {
-                for (int j = 0; j < comprobacion.length; j++) {
+            for (short i = 0; i < comprobacion.length; i++) {
+                for (short j = 0; j < comprobacion.length; j++) {
                     // Comprobacion de filas
                     if (comprobacion[i][j].equals("+")) {
                         contUno++;
@@ -133,7 +130,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
                             break;
                         }
                     }
-                    
+
                     // Comprobacion de columnas
                     if (comprobacion[j][i].equals("+")) {
                         contDos++;
@@ -143,13 +140,13 @@ public class OtraPrueba extends JFrame implements ActionListener {
                         }
 
                         // Comprobacion de diagonales
-                        diagS = j - 1;
-                        diagI = j + 1;
+                        diagS = (short) (j - 1);
+                        diagI = (short) (j + 1);
 
                         if (diagS < 0) {
                             diagS = 0;
                         } else if (diagI >= comprobacion.length) {
-                            diagI = (comprobacion.length - 1);
+                            diagI = (short) (comprobacion.length - 1);
                         }
 
                         System.out.println("S/I: " + diagS + "/" + diagI);
@@ -170,7 +167,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
                 contDos = 0;
                 contTres = 0;
             }
-            
+
             if (contUno == 0 && contDos == 0 && contTres == 0) {
                 JOptionPane.showMessageDialog(null, "Felicidades, completaste el juego de N Reinas");
             }
@@ -179,32 +176,34 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
     public void arrastreReina(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            ((JLabel) evt.getSource()).setLocation(posicion(evt)[0], posicion(evt)[1]);
+            ((JLabel) evt.getSource()).setLocation(evt.getXOnScreen() - 50, evt.getYOnScreen() - 50);
         }
     }
 
     public void valoresIniciales(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            this.newI = (posicion(evt)[1] - 25) / 50;
-            this.newJ = (posicion(evt)[0] - 25) / 50;
-            x = posicion(evt)[0];
-            y = posicion(evt)[1];
-            System.out.println("INI X/Y: " + this.newI + "/" + this.newJ);
+            OtraPrueba.newI = (short) ((posicion(evt)[1] - 25) / 50);
+            OtraPrueba.newJ = (short) ((posicion(evt)[0] - 25) / 50);
+            x = (short) posicion(evt)[0];
+            y = (short) posicion(evt)[1];
+            System.out.println("INI X/Y: " + OtraPrueba.newI + "/" + OtraPrueba.newJ);
             System.out.println("X/Y: " + x + "/" + y);
         }
     }
 
     public void arregloTablero(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            int newX = (posicion(evt)[0] - x) / 50;
-            int newY = (posicion(evt)[1] - y) / 50;
+            ((JLabel) evt.getSource()).setLocation(posicion(evt)[0], posicion(evt)[1]);
+            short newX = (short) ((posicion(evt)[0] - x) / 50);
+            short newY = (short) ((posicion(evt)[1] - y) / 50);
 
             System.out.println("pos X/Y: " + posicion(evt)[0] + "/" + posicion(evt)[1]);
             System.out.println("newX: " + newX + "\nnewY: " + newY);
 
             algoritmo[newI][newJ] = "0|0";
             System.out.println("newI/newJ: " + newI + "/" + newJ);
-            algoritmo[newI + newY][newJ + newX] = Integer.toString(posicion(evt)[0]) + "|" + Integer.toString(posicion(evt)[1]);
+            System.out.println("newX/newY: " + newX + "/" + newY);
+            algoritmo[newI + newY][newJ + newX] = (newY * 50) + "|" + (newX * 50);
 
             count++;
             System.out.println("Movimientos: " + count);
@@ -213,46 +212,46 @@ public class OtraPrueba extends JFrame implements ActionListener {
     }
 
     public void imprimirArreglo(String[][] arreglo) {
-        for (int i = 0; i < arreglo.length; i++) {
-            for (int j = 0; j < arreglo.length; j++) {
-                System.out.print(arreglo[i][j] + "    ");
+        for (String[] arreglo1 : arreglo) {
+            for (short j = 0; j < arreglo.length; j++) {
+                System.out.print(arreglo1[j] + "    ");
             }
             System.out.println("");
         }
     }
 
-    public int[] posicion(MouseEvent evt) {
-        int newX, newY;
+    public short[] posicion(MouseEvent evt) {
+        short newX, newY;
 
-        // Variables de entorno X
+       // Variables de entorno X
         String conX = Integer.toString(evt.getXOnScreen());
         String ultimoX = conX.substring(conX.length() - 2, conX.length());
 
-        int primerosMenosUltimosX = Integer.parseInt(ultimoX);
+        short primerosMenosUltimosX = Short.parseShort(ultimoX);
 
         // Variables de entorno Y
         String conY = Integer.toString(evt.getYOnScreen());
         String ultimoY = conY.substring(conY.length() - 2, conY.length());
 
-        int primerosMenosUltimosY = Integer.parseInt(ultimoY);
+        short primerosMenosUltimosY = Short.parseShort(ultimoY);
 
         if (primerosMenosUltimosX < 25) {
-            newX = 25 + (evt.getXOnScreen() - espacio - primerosMenosUltimosX);
+            newX = (short) (25 + (evt.getXOnScreen() - espacio - primerosMenosUltimosX));
         } else if (primerosMenosUltimosX < 75) {
-            newX = 75 + (evt.getXOnScreen() - espacio - primerosMenosUltimosX);
+            newX = (short) (75 + (evt.getXOnScreen() - espacio - primerosMenosUltimosX));
         } else {
-            newX = 25 + ((evt.getXOnScreen() - espacio + 100) - primerosMenosUltimosX);
+            newX = (short) (25 + ((evt.getXOnScreen() - espacio + 100) - primerosMenosUltimosX));
         }
 
         if (primerosMenosUltimosY < 25) {
-            newY = 25 + (evt.getYOnScreen() - espacio - primerosMenosUltimosY);
+            newY = (short) (25 + (evt.getYOnScreen() - espacio - primerosMenosUltimosY));
         } else if (primerosMenosUltimosY < 75) {
-            newY = 75 + (evt.getYOnScreen() - espacio - primerosMenosUltimosY);
+            newY = (short) (75 + (evt.getYOnScreen() - espacio - primerosMenosUltimosY));
         } else {
-            newY = 25 + ((evt.getYOnScreen() - espacio + 100) - primerosMenosUltimosY);
+            newY = (short) (25 + ((evt.getYOnScreen() - espacio + 100) - primerosMenosUltimosY));
         }
-
-        int retorno[] = {newX, newY};
+        
+        short retorno[] = {newX, newY};
 
         return retorno;
     }
