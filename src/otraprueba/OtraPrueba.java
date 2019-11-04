@@ -176,7 +176,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
     public void arrastreReina(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            ((JLabel) evt.getSource()).setLocation(evt.getXOnScreen() - 50, evt.getYOnScreen() - 50);
+            ((JLabel) evt.getSource()).setLocation(posicion(evt)[0], posicion(evt)[1]);
         }
     }
 
@@ -193,7 +193,6 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
     public void arregloTablero(MouseEvent evt) {
         if (evt.getSource() instanceof JLabel) {
-            ((JLabel) evt.getSource()).setLocation(posicion(evt)[0], posicion(evt)[1]);
             short newX = (short) ((posicion(evt)[0] - x) / 50);
             short newY = (short) ((posicion(evt)[1] - y) / 50);
 
