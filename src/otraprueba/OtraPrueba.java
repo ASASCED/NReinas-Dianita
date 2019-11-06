@@ -1,7 +1,9 @@
 package otraprueba;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.*;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,6 +23,10 @@ public class OtraPrueba extends JFrame implements ActionListener {
 
     JButton boton1;
 
+    String path = "queen.png";
+    URL url = this.getClass().getResource(path);
+    ImageIcon icon = new ImageIcon(url);
+
     public static void main(String[] args) {
         reinas = Short.parseShort(JOptionPane.showInputDialog(null, "Ingrese la cantidad de reinas"));
         OtraPrueba op = new OtraPrueba();
@@ -35,8 +41,7 @@ public class OtraPrueba extends JFrame implements ActionListener {
             label[i] = new JLabel();
             // r + r + r + r
             label[i].setBounds(margen + (espacio * i), margen, anchoAlto, anchoAlto);
-            label[i].setText("Q" + (i + 1));
-            label[i].setForeground(Color.red);
+            label[i].setIcon(icon);
             label[i].setBorder(border);
             label[i].setHorizontalAlignment(SwingConstants.CENTER);
             label[i].addMouseMotionListener(new MouseMotionAdapter() {
@@ -66,6 +71,8 @@ public class OtraPrueba extends JFrame implements ActionListener {
 //                }
 
                 algoritmo[i][j] = (i == 0) ? Integer.toString((margen + (espacio * j))) + "|" + Integer.toString(margen) : "0|0";
+                // variable = (condicion) ? primerValor : segundoValor;
+                // operadores ternarios
             }
         }
 
@@ -199,10 +206,13 @@ public class OtraPrueba extends JFrame implements ActionListener {
             System.out.println("pos X/Y: " + posicion(evt)[0] + "/" + posicion(evt)[1]);
             System.out.println("newX: " + newX + "\nnewY: " + newY);
 
-            algoritmo[newI][newJ] = "0|0";
             System.out.println("newI/newJ: " + newI + "/" + newJ);
             System.out.println("newX/newY: " + newX + "/" + newY);
-            algoritmo[newI + newY][newJ + newX] = (newY * 50) + "|" + (newX * 50);
+
+            if (newX != 0 || newY != 0) {
+                algoritmo[newI][newJ] = "0|0";
+                algoritmo[newI + newY][newJ + newX] = (newY * 50) + "|" + (newX * 50);
+            }
 
             count++;
             System.out.println("Movimientos: " + count);
@@ -220,39 +230,25 @@ public class OtraPrueba extends JFrame implements ActionListener {
     }
 
     public short[] posicion(MouseEvent evt) {
-        short newX, newY;
+        JLabel label = (JLabel) evt.getSource();
+        Point labelLocation = label.getLocation();
 
-       // Variables de entorno X
-        String conX = Integer.toString(evt.getXOnScreen());
-        String ultimoX = conX.substring(conX.length() - 2, conX.length());
+        short x = (short) (labelLocation.x + evt.getX());
+        short y = (short) (labelLocation.y + evt.getY());
 
-        short primerosMenosUltimosX = Short.parseShort(ultimoX);
+        // Obtener numero de casilla x, y
+        x = (short) ((x - margen) / espacio);
+        y = (short) ((y - margen) / espacio);
 
-        // Variables de entorno Y
-        String conY = Integer.toString(evt.getYOnScreen());
-        String ultimoY = conY.substring(conY.length() - 2, conY.length());
+        // No posicionar fuera del tablero
+        x = (short) Math.min(Math.max(0, x), reinas - 1);
+        y = (short) Math.min(Math.max(0, y), reinas - 1);
 
-        short primerosMenosUltimosY = Short.parseShort(ultimoY);
+        // Revertir posicion exacta de casilla
+        x = (short) ((x * espacio) + margen);
+        y = (short) ((y * espacio) + margen);
 
-        if (primerosMenosUltimosX < 25) {
-            newX = (short) (25 + (evt.getXOnScreen() - espacio - primerosMenosUltimosX));
-        } else if (primerosMenosUltimosX < 75) {
-            newX = (short) (75 + (evt.getXOnScreen() - espacio - primerosMenosUltimosX));
-        } else {
-            newX = (short) (25 + ((evt.getXOnScreen() - espacio + 100) - primerosMenosUltimosX));
-        }
-
-        if (primerosMenosUltimosY < 25) {
-            newY = (short) (25 + (evt.getYOnScreen() - espacio - primerosMenosUltimosY));
-        } else if (primerosMenosUltimosY < 75) {
-            newY = (short) (75 + (evt.getYOnScreen() - espacio - primerosMenosUltimosY));
-        } else {
-            newY = (short) (25 + ((evt.getYOnScreen() - espacio + 100) - primerosMenosUltimosY));
-        }
-        
-        short retorno[] = {newX, newY};
-
-        return retorno;
+        return new short[]{x, y};
     }
 
 }
